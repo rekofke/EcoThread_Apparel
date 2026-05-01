@@ -1,4 +1,8 @@
+'use client';
+
 // app/page.tsx
+import { useState } from 'react';
+import { useCart } from './context/CartContext';
 import ProductCard from './components/ProductCard';
 
 type Product = {
@@ -77,7 +81,11 @@ const products: Product[] = [
   },
 ];
 
+
 export default function Home() {
+  const { cartCount, cart, cartTotal, removeFromCart, updateQuantity } = useCart();
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
   return (
     <div
       className="
@@ -86,83 +94,100 @@ export default function Home() {
       "
     >
       {/* Navigation */}
-      <header
+<header
+    className="
+      z-50
+      bg-white
+      border-b
+      sticky top-0
+    "
+  >
+  <div
+    className="
+      flex
+      max-w-7xl
+      mx-auto px-6 py-5
+      justify-between items-center
+    "
+  >
+    <div
+      className="
+        flex
+        items-center gap-3
+      "
+    >
+      <div
         className="
-          z-50
-          bg-white
-          border-b
-          sticky top-0
+          flex
+          w-8 h-8
+          text-white font-bold
+          bg-emerald-600
+          rounded-xl
+          items-center justify-center
+        "
+      >ET</div>
+      <h1
+        className="
+          text-2xl font-semibold tracking-tight
+        "
+      >EcoThread</h1>
+    </div>
+    
+    <nav
+      className="
+        flex
+        text-sm font-medium
+        items-center gap-8
+      "
+    >
+      <a
+        href="#shop"
+        className="
+          transition-colors
+          hover:text-emerald-600
+        "
+      >Shop</a>
+      <a
+        href="#about"
+        className="
+          transition-colors
+          hover:text-emerald-600
+        "
+      >Our Story</a>
+      <a
+        href="#sustainability"
+        className="
+          transition-colors
+          hover:text-emerald-600
+        "
+      >Sustainability</a>
+      
+      {/* Cart Button */}
+      <button
+        onClick={() => setIsCartOpen(true)}
+        className="
+          flex
+          transition-colors
+          items-center gap-2 hover:text-emerald-600 relative
         "
       >
-        <div
+        Cart 
+        <span
           className="
             flex
-            max-w-7xl
-            mx-auto px-6 py-5
-            justify-between items-center
+            w-5 h-5
+            text-white text-xs
+            bg-emerald-600
+            rounded-full
+            items-center justify-center
           "
         >
-          <div
-            className="
-              flex
-              items-center gap-3
-            "
-          >
-            <div
-              className="
-                flex
-                w-8 h-8
-                text-white font-bold
-                bg-emerald-600
-                rounded-xl
-                items-center justify-center
-              "
-            >ET</div>
-            <h1
-              className="
-                text-2xl font-semibold tracking-tight
-              "
-            >EcoThread</h1>
-          </div>
-          
-          <nav
-            className="
-              flex
-              text-sm font-medium
-              items-center gap-8
-            "
-          >
-            <a
-              href="#shop"
-              className="
-                transition-colors
-                hover:text-emerald-600
-              "
-            >Shop</a>
-            <a
-              href="#about"
-              className="
-                transition-colors
-                hover:text-emerald-600
-              "
-            >Our Story</a>
-            <a
-              href="#sustainability"
-              className="
-                transition-colors
-                hover:text-emerald-600
-              "
-            >Sustainability</a>
-            <a
-              href="#"
-              className="
-                transition-colors
-                hover:text-emerald-600
-              "
-            >Cart (0)</a>
-          </nav>
-        </div>
-      </header>
+          {cartCount}
+        </span>
+      </button>
+    </nav>
+  </div>
+</header>
 
       {/* Hero Section */}
       <section
@@ -322,6 +347,202 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* Cart Drawer */}
+      {isCartOpen && (
+        <div
+          className="
+            z-[60] flex
+            fixed inset-0 justify-end
+          "
+        >
+          {/* Backdrop */}
+          <div
+            onClick={() => setIsCartOpen(false)}
+            className="
+              bg-black/50
+              absolute inset-0
+            "
+          />
+          
+          {/* Drawer */}
+          <div
+            className="
+              flex flex-col
+              w-full max-w-md h-full
+              bg-white
+              shadow-2xl
+              relative
+            "
+          >
+            <div
+              className="
+                flex
+                p-6
+                border-b
+                justify-between items-center
+              "
+            >
+              <h2
+                className="
+                  text-2xl font-semibold
+                "
+              >Your Cart ({cartCount})</h2>
+              <button
+                onClick={() => setIsCartOpen(false)}
+                className="
+                  text-3xl leading-none
+                  hover:text-gray-400
+                "
+              >
+                ×
+              </button>
+            </div>
+
+            <div
+              className="
+                flex-1 overflow-auto
+                p-6 space-y-6
+              "
+            >
+              {cart.length === 0 ? (
+                <p
+                  className="
+                    mt-12
+                    text-center text-gray-500
+                  "
+                >Your cart is empty</p>
+              ) : (
+                cart.map(item => (
+                  <div
+                    key={item.id}
+                    className="
+                      flex
+                      pb-6
+                      border-b
+                      gap-4
+                    "
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="
+                        object-cover
+                        w-24 h-24
+                        rounded-xl
+                      "
+                    />
+                    <div
+                      className="
+                        flex-1
+                      "
+                    >
+                      <h4
+                        className="
+                          font-medium
+                        "
+                      >{item.name}</h4>
+                      <p
+                        className="
+                          text-emerald-700
+                        "
+                      >${item.price}</p>
+                      
+                      <div
+                        className="
+                          flex
+                          mt-3
+                          items-center gap-3
+                        "
+                      >
+                        <button
+                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          className="
+                            w-8 h-8
+                            border
+                            rounded hover:bg-gray-100
+                          "
+                        >
+                          −
+                        </button>
+                        <span
+                          className="
+                            w-8
+                            text-center
+                          "
+                        >{item.quantity}</span>
+                        <button
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          className="
+                            w-8 h-8
+                            border
+                            rounded hover:bg-gray-100
+                          "
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => removeFromCart(item.id)}
+                      className="
+                        text-red-500
+                        hover:text-red-700 self-start
+                      "
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {cart.length > 0 && (
+              <div
+                className="
+                  p-6
+                  border-t
+                "
+              >
+                <div
+                  className="
+                    flex
+                    mb-6
+                    text-lg
+                    justify-between
+                  "
+                >
+                  <span>Total</span>
+                  <span
+                    className="
+                      font-semibold
+                    "
+                  >${cartTotal}</span>
+                </div>
+                <button
+                  className="
+                    w-full
+                    py-4
+                    text-white font-semibold
+                    bg-emerald-600
+                    rounded-2xl
+                    hover:bg-emerald-700 transition
+                  "
+                >
+                  Proceed to Checkout
+                </button>
+                <p
+                  className="
+                    mt-4
+                    text-center text-xs text-gray-500
+                  "
+                >or 4 payments of ${(cartTotal/4).toFixed(2)} with Shop Pay</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
