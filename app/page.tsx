@@ -14,6 +14,9 @@ type Product = {
   material: string;
 };
 
+// restructure the product table to filter by category
+
+
 const products: Product[] = [
   {
     id: 1,
@@ -81,9 +84,16 @@ const products: Product[] = [
   },
 ];
 
-
 export default function Home() {
-  const { cartCount, cart, cartTotal, removeFromCart, updateQuantity } = useCart();
+  const { 
+    cartCount, 
+    cart, 
+    cartTotal, 
+    removeFromCart, 
+    updateQuantity, 
+    clearCart 
+  } = useCart();
+
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
 
@@ -95,100 +105,100 @@ export default function Home() {
       "
     >
       {/* Navigation */}
-<header
-    className="
-      z-50
-      bg-white
-      border-b
-      sticky top-0
-    "
-  >
-  <div
-    className="
-      flex
-      max-w-7xl
-      mx-auto px-6 py-5
-      justify-between items-center
-    "
-  >
-    <div
-      className="
-        flex
-        items-center gap-3
-      "
-    >
-      <div
+      <header
         className="
-          flex
-          w-8 h-8
-          text-white font-bold
-          bg-emerald-600
-          rounded-xl
-          items-center justify-center
-        "
-      >ET</div>
-      <h1
-        className="
-          text-2xl font-semibold tracking-tight
-        "
-      >EcoThread</h1>
-    </div>
-    
-    <nav
-      className="
-        flex
-        text-sm font-medium
-        items-center gap-8
-      "
-    >
-      <a
-        href="#shop"
-        className="
-          transition-colors
-          hover:text-emerald-600
-        "
-      >Shop</a>
-      <a
-        href="#about"
-        className="
-          transition-colors
-          hover:text-emerald-600
-        "
-      >Our Story</a>
-      <a
-        href="#sustainability"
-        className="
-          transition-colors
-          hover:text-emerald-600
-        "
-      >Sustainability</a>
-      
-      {/* Cart Button */}
-      <button
-        onClick={() => setIsCartOpen(true)}
-        className="
-          flex
-          transition-colors
-          items-center gap-2 hover:text-emerald-600 relative
+          z-50
+          bg-white
+          border-b
+          sticky top-0
         "
       >
-        Cart 
-        <span
+        <div
           className="
             flex
-            w-5 h-5
-            text-white text-xs
-            bg-emerald-600
-            rounded-full
-            items-center justify-center
+            max-w-7xl
+            mx-auto px-6 py-5
+            justify-between items-center
           "
         >
-          {cartCount}
-        </span>
-      </button>
-    </nav>
-  </div>
-</header>
+          <div
+            className="
+              flex
+              items-center gap-3
+            "
+          >
+            <div
+              className="
+                flex
+                w-8 h-8
+                text-white font-bold
+                bg-emerald-600
+                rounded-xl
+                items-center justify-center
+              "
+            >ET</div>
+            <h1
+              className="
+                text-2xl font-semibold tracking-tight
+              "
+            >EcoThread</h1>
+          </div>
+          
+          <nav
+            className="
+              flex
+              text-sm font-medium
+              items-center gap-8
+            "
+          >
+            <a
+              href="#shop"
+              className="
+                transition-colors
+                hover:text-emerald-600
+              "
+            >Shop</a>
+            <a
+              href="#about"
+              className="
+                transition-colors
+                hover:text-emerald-600
+              "
+            >Our Story</a>
+            <a
+              href="#sustainability"
+              className="
+                transition-colors
+                hover:text-emerald-600
+              "
+            >Sustainability</a>
+            
+            {/* Cart Button */}
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className="
+                flex
+                transition-colors
+                items-center gap-2 hover:text-emerald-600 relative
+              "
+            >
+              Cart 
+              <span
+                className="
+                  flex
+                  w-5 h-5
+                  text-white text-xs
+                  bg-emerald-600
+                  rounded-full
+                  items-center justify-center
+                "
+              >
+                {cartCount}
+              </span>
+            </button>
+          </nav>
+        </div>
+      </header>
 
       {/* Hero Section */}
       <section
@@ -357,7 +367,6 @@ export default function Home() {
             fixed inset-0 justify-end
           "
         >
-          {/* Backdrop */}
           <div
             onClick={() => setIsCartOpen(false)}
             className="
@@ -366,7 +375,6 @@ export default function Home() {
             "
           />
           
-          {/* Drawer */}
           <div
             className="
               flex flex-col
@@ -521,34 +529,36 @@ export default function Home() {
                   >${cartTotal}</span>
                 </div>
                 <button
-    onClick={() => {
-    setIsCartOpen(false);
-    setShowCheckoutModal(true);
-  }}
-    className="
-      w-full
-      py-4
-      text-white font-semibold
-      bg-emerald-600
-      rounded-2xl
-      hover:bg-emerald-700 transition
-    "
-  >
-  Proceed to Checkout
-</button>
+                  onClick={() => {
+                    setIsCartOpen(false);
+                    setShowCheckoutModal(true);
+                  }}
+                  className="
+                    w-full
+                    py-4
+                    text-white font-semibold
+                    bg-emerald-600
+                    rounded-2xl
+                    hover:bg-emerald-700 transition
+                  "
+                >
+                  Proceed to Checkout
+                </button>
                 <p
                   className="
                     mt-4
                     text-center text-xs text-gray-500
                   "
-                >or 4 payments of ${(cartTotal/4).toFixed(2)} with Shop Pay</p>
+                >
+                  or 4 payments of ${(cartTotal / 4).toFixed(2)} with Shop Pay
+                </p>
               </div>
             )}
           </div>
         </div>
       )}
 
-            {/* Checkout Success Modal */}
+      {/* Checkout Success Modal */}
       {showCheckoutModal && (
         <div
           className="
@@ -594,13 +604,13 @@ export default function Home() {
                 text-sm text-emerald-600 font-medium
               "
             >
-              Order #ET-{Date.now().toString().slice(-6)}
+              Order #{`ET-${Date.now().toString().slice(-6)}`}
             </p>
             
             <button
               onClick={() => {
                 setShowCheckoutModal(false);
-                clearCart(); // optional: empty cart after checkout
+                clearCart();
               }}
               className="
                 w-full
@@ -616,7 +626,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
