@@ -1,6 +1,7 @@
 // app/components/ProductCard.tsx
 'use client';
 
+import Image from 'next/image';
 import { useCart } from '../context/CartContext';
 
 type Product = {
@@ -31,7 +32,7 @@ export default function ProductCard({ product }: { product: Product }) {
           relative aspect-square
         "
       >
-        <img
+        <Image
           src={product.image}
           alt={product.name}
           className="
@@ -80,18 +81,10 @@ export default function ProductCard({ product }: { product: Product }) {
         >${product.price}</p>
         
         <button
-          onClick={() => addToCart(product)}
-          className="
-            w-full
-            mt-6 py-3.5
-            text-white font-medium
-            bg-emerald-600
-            rounded-2xl
-            transition-all
-            hover:bg-emerald-700 active:scale-95
-          "
+            onClick={() => addToCart({ ...product, quantity: 1 })}
+            className="mt-6 w-full bg-emerald-600 text-white py-3.5 rounded-2xl font-medium hover:bg-emerald-700 active:scale-95 transition-all"
         >
-          Add to Cart
+            Add to Cart
         </button>
       </div>
     </div>
