@@ -85,6 +85,7 @@ const products: Product[] = [
 export default function Home() {
   const { cartCount, cart, cartTotal, removeFromCart, updateQuantity } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false);
 
   return (
     <div
@@ -520,17 +521,21 @@ export default function Home() {
                   >${cartTotal}</span>
                 </div>
                 <button
-                  className="
-                    w-full
-                    py-4
-                    text-white font-semibold
-                    bg-emerald-600
-                    rounded-2xl
-                    hover:bg-emerald-700 transition
-                  "
-                >
-                  Proceed to Checkout
-                </button>
+    onClick={() => {
+    setIsCartOpen(false);
+    setShowCheckoutModal(true);
+  }}
+    className="
+      w-full
+      py-4
+      text-white font-semibold
+      bg-emerald-600
+      rounded-2xl
+      hover:bg-emerald-700 transition
+    "
+  >
+  Proceed to Checkout
+</button>
                 <p
                   className="
                     mt-4
@@ -539,6 +544,75 @@ export default function Home() {
                 >or 4 payments of ${(cartTotal/4).toFixed(2)} with Shop Pay</p>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+            {/* Checkout Success Modal */}
+      {showCheckoutModal && (
+        <div
+          className="
+            z-[70] flex
+            bg-black/70
+            fixed inset-0 items-center justify-center
+          "
+        >
+          <div
+            className="
+              max-w-md
+              p-10
+              text-center
+              bg-white
+              rounded-3xl
+              relative
+            "
+          >
+            <div
+              className="
+                mb-6
+                text-6xl
+              "
+            >🎉</div>
+            <h2
+              className="
+                mb-4
+                text-3xl font-bold
+              "
+            >Order Placed!</h2>
+            <p
+              className="
+                mb-8
+                text-gray-600
+              "
+            >
+              Thank you for shopping with EcoThread.<br />
+              Your order has been received and will ship within 2 business days.
+            </p>
+            <p
+              className="
+                mb-8
+                text-sm text-emerald-600 font-medium
+              "
+            >
+              Order #ET-{Date.now().toString().slice(-6)}
+            </p>
+            
+            <button
+              onClick={() => {
+                setShowCheckoutModal(false);
+                clearCart(); // optional: empty cart after checkout
+              }}
+              className="
+                w-full
+                py-4
+                text-white font-semibold
+                bg-emerald-600
+                rounded-2xl
+                hover:bg-emerald-700
+              "
+            >
+              Back to Shop
+            </button>
           </div>
         </div>
       )}
