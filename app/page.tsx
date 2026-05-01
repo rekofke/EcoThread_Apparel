@@ -16,6 +16,20 @@ export default function Home() {
             <a href="#sustainability" className="hover:text-emerald-600 transition-colors">Sustainability</a>
             <a href="#" className="hover:text-emerald-600 transition-colors">Cart (0)</a>
           </nav>
+
+          {/* Shop Section  */}
+          <section id="shop" className="max-w-7x. mx-auto px-6 py-20">
+            <div className="flex justify-between items-end mb-12">
+              <div>
+                <h2 className="text-5xl font-bold tracking-tight">Our Collection</h2>
+                <p className="text-sm text-gray-500 mt-2">Sustainable essentials for everyday wear</p>
+              </div>
+
+              <div className="grid grid-cols-1 sm.grid-cols-2 lg-grid-cols-3 xl grid-cols-4 gap-8">
+                {/*  We'll add product here next  */}
+              </div>
+            </div>
+          </section>
         </div>
       </header>
 
